@@ -1,0 +1,59 @@
+from myapp.models import *
+User.objects.create(username = 'Petya')
+User.objects.create(username = 'Vasya')
+
+Author.objects.create(author_user = User.objects.get(username = 'Petya'))
+Author.objects.create(author_user = User.objects.get(username = 'Vasya'))
+
+Category.objects.create(category_name = 'Sport')  
+Category.objects.create(category_name = 'News')  
+Category.objects.create(category_name = 'Politic') 
+Category.objects.create(category_name = 'Fresh') 
+
+Post.objects.create(post_author = Author.objects.get(author_user = User.objects.get(username = 'Vasya')), post_choice = 1, post_title = 'Титул первой статьи', post_text = 'Текст первой статьи') 
+Post.objects.create(post_author = Author.objects.get(author_user = User.objects.get(username = 'Petya')), post_choice = 1, post_title = 'Титул второй статьи', post_text = 'Текст второй статьи')  
+Post.objects.create(post_author = Author.objects.get(author_user = User.objects.get(username = 'Petya')), post_choice = 2, post_title = 'Новость дня', post_text = 'Lorem ipsum')
+
+Post.objects.get(post_title = 'Титул первой статьи').category.add(Category.objects.get(category_name = 'Sport'), Category.objects.get(category_name = 'News'))
+Post.objects.get(post_title = 'Титул второй статьи').category.add(Category.objects.get(category_name = 'Politic'), Category.objects.get(category_name = 'Fresh'))
+Post.objects.get(post_title = 'Новость дня').category.add(Category.objects.get(category_name = 'Sport'), Category.objects.get(category_name = 'Fresh'))
+
+Comment.objects.create(post = Post.objects.get(post_title = 'Титул первой статьи'), user = User.objects.get(username = 'Vasya'), comment_text = 'Текст первого комментария')
+Comment.objects.create(post = Post.objects.get(post_title = 'Титул первой статьи'), user = User.objects.get(username = 'Petya'), comment_text = 'Текст второго комментария') 
+Comment.objects.create(post = Post.objects.get(post_title = 'Титул второй статьи'), user = User.objects.get(username = 'Petya'), comment_text = 'Текст третьего комментария')
+Comment.objects.create(post = Post.objects.get(post_title = 'Новость дня'), user = User.objects.get(username = 'Vasya'), comment_text = 'Текст четвертого комментария') 
+
+Post.objects.get(post_title = 'Титул первой статьи').like()  
+Post.objects.get(post_title = 'Титул первой статьи').like()
+Post.objects.get(post_title = 'Титул первой статьи').like()
+Post.objects.get(post_title = 'Титул второй статьи').dislike() 
+Post.objects.get(post_title = 'Титул второй статьи').dislike()
+Post.objects.get(post_title = 'Титул второй статьи').dislike()
+Post.objects.get(post_title = 'Титул второй статьи').dislike()
+Post.objects.get(post_title = 'Титул второй статьи').dislike()
+Post.objects.get(post_title = 'Титул второй статьи').dislike()
+Post.objects.get(post_title = 'Новость дня').like()            
+Post.objects.get(post_title = 'Новость дня').like()
+Post.objects.get(post_title = 'Новость дня').like()
+
+Comment.objects.get(comment_text = 'Текст первого комментария').like()
+Comment.objects.get(comment_text = 'Текст первого комментария').like()
+Comment.objects.get(comment_text = 'Текст первого комментария').like()
+Comment.objects.get(comment_text = 'Текст второго комментария').like() 
+Comment.objects.get(comment_text = 'Текст второго комментария').like()
+Comment.objects.get(comment_text = 'Текст второго комментария').like()
+Comment.objects.get(comment_text = 'Текст третьего комментария').dislike() 
+Comment.objects.get(comment_text = 'Текст третьего комментария').dislike()
+Comment.objects.get(comment_text = 'Текст третьего комментария').dislike()
+Comment.objects.get(comment_text = 'Текст четвертого комментария').dislike()  
+Comment.objects.get(comment_text = 'Текст четвертого комментария').dislike()
+Comment.objects.get(comment_text = 'Текст четвертого комментария').dislike()
+
+Author.objects.get(author_user = User.objects.get(username = 'Vasya')).update_rating() 
+Author.objects.get(author_user = User.objects.get(username = 'Petya')).update_rating()  
+
+Author.objects.order_by('-author_rate')[0] 
+
+Post.objects.order_by('-post_rate')[0] 
+
+Comment.objects.filter(post = Post.objects.order_by('-post_rate')[0])  
